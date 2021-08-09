@@ -10,7 +10,7 @@ class MemoryBoardAdapter(private val context: Context, private val numPieces: In
 RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+   // override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         TODO("Not yet implemented")
     }
 
