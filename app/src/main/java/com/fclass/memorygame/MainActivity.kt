@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var rvBoard:RecyclerView
