@@ -1,9 +1,11 @@
 package com.fclass.memorygame
 
 import  android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.min
@@ -15,7 +17,12 @@ class MemoryBoardAdapter(private val context: Context, private val numPieces: In
     //companion object is similar to static variable in java that we don't need an instance of an object
     //to call it, it can be evoked directly from the class without an object first being created
     companion object {
-        private const val MARGIN_SIZE = 10
+        private const val MARGIN_SIZE = 10 //Margin around the CardViews
+
+        //this TAG will appear in the Info Logs because Log.i(TAG, "$postion") so we can easily go
+        //in Logcat filter info Log because of Log.i and search for MemoryBoardAdapter to find the log
+        //in this case it is linked to a ClickListener on cardView
+        private const val TAG = "MemoryBoardAdapter"
     }
 
 
@@ -53,8 +60,12 @@ class MemoryBoardAdapter(private val context: Context, private val numPieces: In
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        private val imageButton = itemView.findViewById<ImageButton>(R.id.imageButton)
         fun bind(position: Int) {
-            //no_op
+            imageButton.setOnClickListener{
+                Log.i(TAG, "clicked on postition $position")
+            }
 
         }
     }
