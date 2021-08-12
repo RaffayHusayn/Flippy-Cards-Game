@@ -12,7 +12,11 @@ import com.fclass.memorygame.models.BoardSize
 import kotlin.math.min
 
 
-class MemoryBoardAdapter(private val context: Context, private val boardSize: BoardSize) :
+class MemoryBoardAdapter (
+    private val context: Context,
+    private val boardSize: BoardSize,
+    private val cardImages: List<Int>
+) :
     RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>() {
 
     //companion object is similar to static variable in java that we don't need an instance of an object
@@ -64,6 +68,9 @@ class MemoryBoardAdapter(private val context: Context, private val boardSize: Bo
 
         private val imageButton = itemView.findViewById<ImageButton>(R.id.imageButton)
         fun bind(position: Int) {
+
+            //binding Vector Images to the cards
+            imageButton.setImageResource(cardImages[position])
             imageButton.setOnClickListener{
                 Log.i(TAG, "clicked on postition $position")
             }

@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fclass.memorygame.models.BoardSize
+import com.fclass.memorygame.utils.DEFAULT_ICONS
 
 
 class MainActivity : AppCompatActivity() {
@@ -15,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvNumPairs:TextView
 
     //creating an object of BoardSize class
-    private var boardSize : BoardSize = BoardSize.MEDIUM
+    private var boardSize : BoardSize = BoardSize.HARD
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,9 +28,14 @@ class MainActivity : AppCompatActivity() {
         tvNumPairs  = findViewById(R.id.tvNumPairs)
 
 
+        //shuffled means random in kotlin and we take total number of pairs because we will need 12 icons for 24 grid
+        val chosenImages = DEFAULT_ICONS.shuffled().take(boardSize.getNumPairs())
+        //doubling up the chosen images
+        val randomizedImages = (chosenImages + chosenImages).shuffled()
+
         //second parameter in MemoryBoardAdapter is boardSize not boardSize.numCards because we made this
         //class and the data type for second parameter is not int but BoardSize
-        rvBoard.adapter = MemoryBoardAdapter(this, boardSize)
+        rvBoard.adapter = MemoryBoardAdapter(this, boardSize, randomizedImages)
         rvBoard.setHasFixedSize(true)
         rvBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
     }
