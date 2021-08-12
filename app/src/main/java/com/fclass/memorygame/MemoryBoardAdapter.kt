@@ -8,10 +8,11 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.fclass.memorygame.models.BoardSize
 import kotlin.math.min
 
 
-class MemoryBoardAdapter(private val context: Context, private val numPieces: Int) :
+class MemoryBoardAdapter(private val context: Context, private val boardSize: BoardSize) :
     RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>() {
 
     //companion object is similar to static variable in java that we don't need an instance of an object
@@ -31,8 +32,8 @@ class MemoryBoardAdapter(private val context: Context, private val numPieces: In
 
    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
-       val cardWidth = parent.width / 2 - (2*MARGIN_SIZE)//hardcoding for 2 columns, parent is the RecyclerView
-       val cardHeight  = parent.height / 4 - (2*MARGIN_SIZE)//hardcoding for 4 rows, parent is the RecyclerView
+       val cardWidth = parent.width / boardSize.getWidth() - (2*MARGIN_SIZE)//hardcoding for 2 columns, parent is the RecyclerView
+       val cardHeight  = parent.height / boardSize.getHeight() - (2*MARGIN_SIZE)//hardcoding for 4 rows, parent is the RecyclerView
        //to make the card square, just take the smaller measurement
        val cardSideLength = min(cardWidth, cardHeight)
 
@@ -56,7 +57,7 @@ class MemoryBoardAdapter(private val context: Context, private val numPieces: In
         holder.bind(position)
     }
 
-    override fun getItemCount() = numPieces
+    override fun getItemCount() = boardSize.numCards
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

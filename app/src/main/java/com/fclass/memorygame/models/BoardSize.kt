@@ -3,7 +3,7 @@ package com.fclass.memorygame.models
 enum class BoardSize(val numCards : Int) {
     EASY(8), //2x4 grid
     MEDIUM(18),//3x6 grid
-    HARD(24)//4x6 grid
+    HARD(24);//4x6 grid
 
     fun getWidth() : Int{
         return when (this){
