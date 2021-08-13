@@ -16,7 +16,8 @@ import kotlin.math.min
 class MemoryBoardAdapter(
     private val context: Context,
     private val boardSize: BoardSize,
-    private val cards: List<MemoryCard>
+    private val cards: List<MemoryCard>,
+    private val cardClickListener: CardClickListener
 ) :
     RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>() {
 
@@ -31,7 +32,10 @@ class MemoryBoardAdapter(
         private const val TAG = "MemoryBoardAdapter"
     }
 
-
+    //creating an interface to notify the game if a card is clicked
+    interface CardClickListener{
+        fun onCardClicked(position: Int)
+    }
 
 
 
@@ -75,7 +79,10 @@ class MemoryBoardAdapter(
             //binding Vector Images to the cards
             imageButton.setImageResource(if (memoryCard.isFaceUp) memoryCard.identifier else R.drawable.ic_launcher_background )
             imageButton.setOnClickListener{
+
                 Log.i(TAG, "clicked on postition $position")
+                cardClickListener.onCardClicked(position)
+
             }
 
         }

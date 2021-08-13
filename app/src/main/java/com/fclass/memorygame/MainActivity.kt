@@ -2,6 +2,7 @@ package com.fclass.memorygame
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,12 @@ class MainActivity : AppCompatActivity() {
     private var boardSize : BoardSize = BoardSize.HARD
 
 
+
+    companion object{
+        private const val TAG = "MainActivity"
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -33,7 +40,12 @@ class MainActivity : AppCompatActivity() {
         val memoryGame = MemoryGame(boardSize)
         //second parameter in MemoryBoardAdapter is boardSize not boardSize.numCards because we made this
         //class and the data type for second parameter is not int but BoardSize
-        rvBoard.adapter = MemoryBoardAdapter(this, boardSize, memoryGame.cards)
+        rvBoard.adapter = MemoryBoardAdapter(this, boardSize, memoryGame.cards, object: MemoryBoardAdapter.CardClickListener{
+            override fun onCardClicked(position: Int) {
+                Log.i(TAG, "card is clicked at $position")
+            }
+
+        })
         rvBoard.setHasFixedSize(true)
         rvBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
     }
