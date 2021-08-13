@@ -70,8 +70,10 @@ class MemoryBoardAdapter(
         private val imageButton = itemView.findViewById<ImageButton>(R.id.imageButton)
         fun bind(position: Int) {
 
+
+            val memoryCard = cards[position]
             //binding Vector Images to the cards
-            imageButton.setImageResource(if (cards[position].isFaceUp) cards[position].identifier else R.drawable.ic_launcher_background )
+            imageButton.setImageResource(if (memoryCard.isFaceUp) memoryCard.identifier else R.drawable.ic_launcher_background )
             imageButton.setOnClickListener{
                 Log.i(TAG, "clicked on postition $position")
             }

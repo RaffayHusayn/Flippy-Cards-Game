@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fclass.memorygame.models.BoardSize
 import com.fclass.memorygame.models.MemoryCard
+import com.fclass.memorygame.models.MemoryGame
 import com.fclass.memorygame.utils.DEFAULT_ICONS
 
 
@@ -29,21 +30,10 @@ class MainActivity : AppCompatActivity() {
         tvNumPairs  = findViewById(R.id.tvNumPairs)
 
 
-        //shuffled means random in kotlin and we take total number of pairs because we will need 12 icons for 24 grid
-        val chosenImages = DEFAULT_ICONS.shuffled().take(boardSize.getNumPairs())
-        //doubling up the chosen images
-        val randomizedImages = (chosenImages + chosenImages).shuffled()
-
-        //Instead of passing just the Randomized Vector Icons we want to instead pass on
-        //a MemoryCard object (of a data class) where it has properties like
-        //1. Identifier which is the one element of the list of randomizedImages, 2. if the card is
-        //faceup or facedown, 3. if the card is matched or not
-        val memoryCards : List<MemoryCard> = randomizedImages.map{MemoryCard(identifier = it)}
-
-
+        val memoryGame = MemoryGame(boardSize)
         //second parameter in MemoryBoardAdapter is boardSize not boardSize.numCards because we made this
         //class and the data type for second parameter is not int but BoardSize
-        rvBoard.adapter = MemoryBoardAdapter(this, boardSize, memoryCards)
+        rvBoard.adapter = MemoryBoardAdapter(this, boardSize, memoryGame.cards)
         rvBoard.setHasFixedSize(true)
         rvBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
     }
