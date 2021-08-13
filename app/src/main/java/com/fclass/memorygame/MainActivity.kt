@@ -14,9 +14,11 @@ import com.fclass.memorygame.utils.DEFAULT_ICONS
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var memoryGame: MemoryGame
     private lateinit var rvBoard:RecyclerView
     private lateinit var tvNumMoves:TextView
     private lateinit var tvNumPairs:TextView
+    private lateinit var adapter: MemoryBoardAdapter
 
     //creating an object of BoardSize class
     private var boardSize : BoardSize = BoardSize.HARD
@@ -37,16 +39,24 @@ class MainActivity : AppCompatActivity() {
         tvNumPairs  = findViewById(R.id.tvNumPairs)
 
 
-        val memoryGame = MemoryGame(boardSize)
+        memoryGame = MemoryGame(boardSize)
         //second parameter in MemoryBoardAdapter is boardSize not boardSize.numCards because we made this
         //class and the data type for second parameter is not int but BoardSize
-        rvBoard.adapter = MemoryBoardAdapter(this, boardSize, memoryGame.cards, object: MemoryBoardAdapter.CardClickListener{
+        adapter = MemoryBoardAdapter(this, boardSize, memoryGame.cards, object: MemoryBoardAdapter.CardClickListener{
             override fun onCardClicked(position: Int) {
-                Log.i(TAG, "card is clicked at $position")
+                updateGameWithFlip(position)
             }
 
         })
+        rvBoard.adapter = adapter
         rvBoard.setHasFixedSize(true)
         rvBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
+    }
+
+    private fun updateGameWithFlip(position: Int) {
+        memoryGame.flipCard(position)
+        //once the card is flipped, we have to notify the adapter that it is changed
+        adapter.notifyDataSetChanged()
+
     }
 }

@@ -4,7 +4,8 @@ import com.fclass.memorygame.utils.DEFAULT_ICONS
 
 class MemoryGame(private val boardSize: BoardSize) {
 
-        val cards: List<MemoryCard>
+
+    val cards: List<MemoryCard>
         val numPairsFound = 0
 
     init{
@@ -19,6 +20,11 @@ class MemoryGame(private val boardSize: BoardSize) {
         //1. Identifier which is the one element of the list of randomizedImages, 2. if the card is
         //faceup or facedown, 3. if the card is matched or not
         cards = randomizedImages.map{MemoryCard(identifier = it)}
+    }
+
+    fun flipCard(position: Int) {
+        val card = cards[position]
+        card.isFaceUp = !card.isFaceUp
     }
 
 
