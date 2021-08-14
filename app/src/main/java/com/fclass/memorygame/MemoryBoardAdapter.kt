@@ -36,32 +36,34 @@ class MemoryBoardAdapter(
     }
 
     //creating an interface to notify the game if a card is clicked
-    interface CardClickListener{
+    interface CardClickListener {
         fun onCardClicked(position: Int)
     }
 
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
-   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val cardWidth =
+            parent.width / boardSize.getWidth() - (2 * MARGIN_SIZE)//hardcoding for 2 columns, parent is the RecyclerView
+        val cardHeight =
+            parent.height / boardSize.getHeight() - (2 * MARGIN_SIZE)//hardcoding for 4 rows, parent is the RecyclerView
+        //to make the card square, just take the smaller measurement
+        val cardSideLength = min(cardWidth, cardHeight)
 
-       val cardWidth = parent.width / boardSize.getWidth() - (2*MARGIN_SIZE)//hardcoding for 2 columns, parent is the RecyclerView
-       val cardHeight  = parent.height / boardSize.getHeight() - (2*MARGIN_SIZE)//hardcoding for 4 rows, parent is the RecyclerView
-       //to make the card square, just take the smaller measurement
-       val cardSideLength = min(cardWidth, cardHeight)
-
-       val view = LayoutInflater.from( context).inflate(R.layout.memory_card, parent, false)
-
-
-       //grabbing out the cardView from the view that we have inflated in LayoutInflater
-       val layoutParams = view.findViewById<CardView>(R.id.cardView).layoutParams as ViewGroup.MarginLayoutParams
-       //dynamically setting the dimension of the card, both same bc we want it to be a square
-       layoutParams.height = cardSideLength
-       layoutParams.width = cardSideLength
-       //setting viewGroup.MarginLayoutParam allows us to set the margin
-       layoutParams.setMargins(MARGIN_SIZE, MARGIN_SIZE, MARGIN_SIZE, MARGIN_SIZE)
+        val view = LayoutInflater.from(context).inflate(R.layout.memory_card, parent, false)
 
 
-       return ViewHolder(view)
+        //grabbing out the cardView from the view that we have inflated in LayoutInflater
+        val layoutParams =
+            view.findViewById<CardView>(R.id.cardView).layoutParams as ViewGroup.MarginLayoutParams
+        //dynamically setting the dimension of the card, both same bc we want it to be a square
+        layoutParams.height = cardSideLength
+        layoutParams.width = cardSideLength
+        //setting viewGroup.MarginLayoutParam allows us to set the margin
+        layoutParams.setMargins(MARGIN_SIZE, MARGIN_SIZE, MARGIN_SIZE, MARGIN_SIZE)
+
+
+        return ViewHolder(view)
 
     }
 
@@ -80,15 +82,18 @@ class MemoryBoardAdapter(
 
             val memoryCard = cards[position]
             //binding Vector Images to the cards
-            imageButton.setImageResource(if (memoryCard.isFaceUp) memoryCard.identifier else R.drawable.ic_launcher_background )
+            imageButton.setImageResource(if (memoryCard.isFaceUp) memoryCard.identifier else R.drawable.ic_launcher_background)
 
             //setting the transparency of found pairs
             imageButton.alpha = if (memoryCard.isMatched) .4f else 1.0f
-            val colorStateList =  if (memoryCard.isMatched) ContextCompat.getColorStateList(context, R.color.color_green) else null
+            val colorStateList = if (memoryCard.isMatched) ContextCompat.getColorStateList(
+                context,
+                R.color.color_green
+            ) else null
             ViewCompat.setBackgroundTintList(imageButton, colorStateList)
 
 
-            imageButton.setOnClickListener{
+            imageButton.setOnClickListener {
 
                 Log.i(TAG, "clicked on postition $position")
                 cardClickListener.onCardClicked(position)

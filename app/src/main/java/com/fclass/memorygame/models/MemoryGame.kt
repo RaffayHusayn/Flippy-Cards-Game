@@ -9,7 +9,8 @@ class MemoryGame(private val boardSize: BoardSize) {
     val cards: List<MemoryCard>
     var numPairsFound = 0
     private var indexOfSingleSelectedCard: Int? = null //type of this is nullable int
-    init{
+
+    init {
 
         //shuffled means random in kotlin and we take total number of pairs because we will need 12 icons for 24 grid
         val chosenImages = DEFAULT_ICONS.shuffled().take(boardSize.getNumPairs())
@@ -20,19 +21,18 @@ class MemoryGame(private val boardSize: BoardSize) {
         //a MemoryCard object (of a data class) where it has properties like
         //1. Identifier which is the one element of the list of randomizedImages, 2. if the card is
         //faceup or facedown, 3. if the card is matched or not
-        cards = randomizedImages.map{MemoryCard(identifier = it)}
+        cards = randomizedImages.map { MemoryCard(identifier = it) }
     }
 
-    fun flipCard(position: Int): Boolean  {
+    fun flipCard(position: Int): Boolean {
         val card = cards[position]
 
         var foundMatch = false
-        if (indexOfSingleSelectedCard== null){
+        if (indexOfSingleSelectedCard == null) {
             //0 or 2 cards previously flipped over
             restoreCards()
             indexOfSingleSelectedCard = position
-        }
-        else{
+        } else {
             //exactly 1 card previously flipped over
             foundMatch = checkForMatch(indexOfSingleSelectedCard!!, position)
 
@@ -42,31 +42,29 @@ class MemoryGame(private val boardSize: BoardSize) {
         return foundMatch
     }
 
-    private fun checkForMatch(position1: Int, position2: Int) : Boolean{
-        if (cards[position1].identifier != cards[position2].identifier){
+    private fun checkForMatch(position1: Int, position2: Int): Boolean {
+        if (cards[position1].identifier != cards[position2].identifier) {
             return false
         }
 
         cards[position1].isMatched = true
         cards[position2].isMatched = true
-        numPairsFound ++
+        numPairsFound++
         return true
-
 
 
     }
 
     private fun restoreCards() {
 
-        for (card in cards){
-           if (!card.isMatched){
+        for (card in cards) {
+            if (!card.isMatched) {
                 card.isFaceUp = false
-           }
+            }
 
 
         }
     }
-
 
 
     fun haveWonGame(): Boolean {
