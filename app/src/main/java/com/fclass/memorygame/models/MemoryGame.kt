@@ -1,13 +1,16 @@
 package com.fclass.memorygame.models
 
+import android.util.Log
 import com.fclass.memorygame.utils.DEFAULT_ICONS
 
 class MemoryGame(private val boardSize: BoardSize) {
 
-
+    companion object{
+        private const val TAG = "matched"
+    }
     val cards: List<MemoryCard>
-        val numPairsFound = 0
-
+    var numPairsFound = 0
+    private var indexOfSingleSelectedCard: Int? = null //type of this is nullable int
     init{
 
         //shuffled means random in kotlin and we take total number of pairs because we will need 12 icons for 24 grid
@@ -22,9 +25,49 @@ class MemoryGame(private val boardSize: BoardSize) {
         cards = randomizedImages.map{MemoryCard(identifier = it)}
     }
 
-    fun flipCard(position: Int) {
+    fun flipCard(position: Int): Boolean  {
         val card = cards[position]
+
+        var foundMatch = false
+        if (indexOfSingleSelectedCard== null){
+            //0 or 2 cards previously flipped over
+            restoreCards()
+            indexOfSingleSelectedCard = position
+        }
+        else{
+            //exactly 1 card previously flipped over
+            foundMatch = checkForMatch(indexOfSingleSelectedCard!!, position)
+
+            indexOfSingleSelectedCard = null
+        }
         card.isFaceUp = !card.isFaceUp
+        return foundMatch
+    }
+
+    private fun checkForMatch(position1: Int, position2: Int) : Boolean{
+        if (cards[position1].identifier != cards[position2].identifier){
+            return false
+        }
+
+        cards[position1].isMatched = true
+        cards[position2].isMatched = true
+        numPairsFound ++
+        Log.i(TAG, "pair found: $numPairsFound")
+        return true
+
+
+
+    }
+
+    private fun restoreCards() {
+
+        for (card in cards){
+           if (!card.isMatched){
+                card.isFaceUp = false
+           }
+
+
+        }
     }
 
 

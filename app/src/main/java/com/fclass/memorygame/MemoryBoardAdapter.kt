@@ -7,9 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.fclass.memorygame.models.BoardSize
 import com.fclass.memorygame.models.MemoryCard
+import com.fclass.memorygame.models.MemoryGame
 import kotlin.math.min
 
 
@@ -78,6 +81,13 @@ class MemoryBoardAdapter(
             val memoryCard = cards[position]
             //binding Vector Images to the cards
             imageButton.setImageResource(if (memoryCard.isFaceUp) memoryCard.identifier else R.drawable.ic_launcher_background )
+
+            //setting the transparency of found pairs
+            imageButton.alpha = if (memoryCard.isMatched) .4f else 1.0f
+            val colorStateList =  if (memoryCard.isMatched) ContextCompat.getColorStateList(context, R.color.color_gray) else null
+            ViewCompat.setBackgroundTintList(imageButton, colorStateList)
+
+
             imageButton.setOnClickListener{
 
                 Log.i(TAG, "clicked on postition $position")
