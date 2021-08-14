@@ -1,6 +1,7 @@
 package com.fclass.memorygame
 
 import android.animation.ArgbEvaluator
+import android.app.AlertDialog
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -78,14 +79,38 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.mi_refresh -> {
-                //Setup the game again, Pressing of Refresh Button is detected
-                setupBoard()
+                //Show alert dialog to user because he can lose progress
+                if (memoryGame.getNumMoves() >0 && !memoryGame.haveWonGame()){
+                    showAlertDialog("🤔🤔Quit your current game?🧐🧐", null, View.OnClickListener {
+                        setupBoard()
+                    })
+                }else{
+                    //Setup the game again, Pressing of Refresh Button is detected
+                    setupBoard()
+                }
+
+
+
 
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
+
+
+
+
+
+    private fun showAlertDialog(title: String, view: View?, positiveClickListener: View.OnClickListener) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setView(view)
+            .setNegativeButton("Cancel", null)
+            .setPositiveButton("Ok"){_,_ ->
+                positiveClickListener.onClick(null)
+            }.show() 
+    }
 
 
 
