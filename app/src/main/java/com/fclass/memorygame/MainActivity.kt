@@ -2,6 +2,7 @@ package com.fclass.memorygame
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
@@ -76,8 +77,11 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        //Actually flipping the card
+        if (memoryGame.flipCard(position)){
 
-        memoryGame.flipCard(position)
+            Log.i(TAG, "Game is won, no of pairs found :${memoryGame.numPairsFound}")
+        }
         //once the card is flipped, we have to notify the adapter that it is changed
         adapter.notifyDataSetChanged()
 
