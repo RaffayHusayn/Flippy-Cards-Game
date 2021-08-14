@@ -1,10 +1,13 @@
 package com.fclass.memorygame
 
+import android.animation.ArgbEvaluator
+import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fclass.memorygame.models.BoardSize
@@ -80,6 +83,15 @@ class MainActivity : AppCompatActivity() {
         //Actually flipping the card, FLIPCARD returns true when a match is found
         if (memoryGame.flipCard(position)) {
             Log.i(TAG, "Found a match, no of pairs found :${memoryGame.numPairsFound}")
+
+            val color = ArgbEvaluator().evaluate(
+                memoryGame.numPairsFound.toFloat() / boardSize.getNumPairs(),
+                ContextCompat.getColor(this, R.color.color_progress_none),
+                ContextCompat.getColor(this, R.color.color_progress_full),
+
+                ) as Int //casting the value of Argb Value as an Int because SetTextColor expects an Int
+            tvNumPairs.setTextColor(color)
+            tvNumPairs.setTypeface(null, Typeface.BOLD)
             tvNumPairs.text = "Pairs : ${memoryGame.numPairsFound} / ${boardSize.getNumPairs()}"
 
             if(memoryGame.haveWonGame()){

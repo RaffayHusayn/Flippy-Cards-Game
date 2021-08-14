@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="color_gray">#A0A0A0</color>
     <color name="color_green">#D553FF59</color>
+    <color name="color_progress_none">#A3504A</color>
+    <color name="color_progress_full">#24A628</color>
 </resources>
