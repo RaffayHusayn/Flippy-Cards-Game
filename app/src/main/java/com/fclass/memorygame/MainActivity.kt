@@ -2,14 +2,11 @@ package com.fclass.memorygame
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fclass.memorygame.models.BoardSize
-import com.fclass.memorygame.models.MemoryCard
 import com.fclass.memorygame.models.MemoryGame
-import com.fclass.memorygame.utils.DEFAULT_ICONS
 
 
 class MainActivity : AppCompatActivity() {
@@ -54,6 +51,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateGameWithFlip(position: Int) {
+
+        //Error Handling
+        //1. Already won the game
+        if (memoryGame.haveWonGame()){
+
+            //notify user
+            return
+        }
+
+        //2. Card already flipped
+        if(memoryGame.isCardFaceIp(position)){
+
+            //don't let user do anything to that card
+            return
+        }
+
+
+
         memoryGame.flipCard(position)
         //once the card is flipped, we have to notify the adapter that it is changed
         adapter.notifyDataSetChanged()

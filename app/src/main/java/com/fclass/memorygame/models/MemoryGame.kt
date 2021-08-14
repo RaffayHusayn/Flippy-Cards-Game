@@ -5,9 +5,7 @@ import com.fclass.memorygame.utils.DEFAULT_ICONS
 
 class MemoryGame(private val boardSize: BoardSize) {
 
-    companion object{
-        private const val TAG = "matched"
-    }
+
     val cards: List<MemoryCard>
     var numPairsFound = 0
     private var indexOfSingleSelectedCard: Int? = null //type of this is nullable int
@@ -52,7 +50,6 @@ class MemoryGame(private val boardSize: BoardSize) {
         cards[position1].isMatched = true
         cards[position2].isMatched = true
         numPairsFound ++
-        Log.i(TAG, "pair found: $numPairsFound")
         return true
 
 
@@ -68,6 +65,16 @@ class MemoryGame(private val boardSize: BoardSize) {
 
 
         }
+    }
+
+
+
+    fun haveWonGame(): Boolean {
+        return numPairsFound == boardSize.getNumPairs()
+    }
+
+    fun isCardFaceIp(position: Int): Boolean {
+        return cards[position].isFaceUp
     }
 
 

@@ -84,7 +84,7 @@ class MemoryBoardAdapter(
 
             //setting the transparency of found pairs
             imageButton.alpha = if (memoryCard.isMatched) .4f else 1.0f
-            val colorStateList =  if (memoryCard.isMatched) ContextCompat.getColorStateList(context, R.color.color_gray) else null
+            val colorStateList =  if (memoryCard.isMatched) ContextCompat.getColorStateList(context, R.color.color_green) else null
             ViewCompat.setBackgroundTintList(imageButton, colorStateList)
 
 
