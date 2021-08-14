@@ -86,6 +86,11 @@ class MainActivity : AppCompatActivity() {
                 Snackbar.make(clRoot, "Congrats, you won", Snackbar.LENGTH_SHORT).show()
             }
         }
+
+
+        //update the number of moves the user has made
+        tvNumMoves.text = "Moves :  ${memoryGame.getNumMoves()}"
+
         //once the card is flipped, we have to notify the adapter that it is changed
         adapter.notifyDataSetChanged()
 
