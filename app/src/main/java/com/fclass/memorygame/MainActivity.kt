@@ -5,6 +5,8 @@ import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -31,9 +33,15 @@ class MainActivity : AppCompatActivity() {
     private var boardSize: BoardSize = BoardSize.MEDIUM
 
 
+
+
     companion object {
         private const val TAG = "MainActivity"
     }
+
+
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +55,44 @@ class MainActivity : AppCompatActivity() {
         llGameInfo = findViewById(R.id.llGameInfo)
 
 
+        //setting up the game again on Refresh
+        setupBoard()
+    }
+
+
+
+
+
+
+    //Inflating the Main Activity with the Menu Resource File that we created in menu_main.xml
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+
+
+
+
+    //This is how we get notified of the user tapping on the Refresh button in the menu
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.mi_refresh -> {
+                //Setup the game again, Pressing of Refresh Button is detected
+                setupBoard()
+
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
+
+
+
+
+    //all the logic to setup a new game ofter REFRESH
+    private fun setupBoard() {
         memoryGame = MemoryGame(boardSize)
         //second parameter in MemoryBoardAdapter is boardSize not boardSize.numCards because we made this
         //class and the data type for second parameter is not int but BoardSize
@@ -64,6 +110,11 @@ class MainActivity : AppCompatActivity() {
         rvBoard.setHasFixedSize(true)
         rvBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
     }
+
+
+
+
+
 
 
     private fun updateGameWithFlip(position: Int) {
@@ -100,21 +151,17 @@ class MainActivity : AppCompatActivity() {
 
             if (memoryGame.haveWonGame()) {
 
-
-//                Snackbar.make(clRoot, "Congrats, you won", Snackbar.LENGTH_SHORT).show()
-
-//
-                val snackbar = Snackbar.make(clRoot, "🎉🎉🎉 LEVEL COMPLETE 🎉🎉🎉 ", Snackbar.LENGTH_LONG)
-                //val sbView: View = snackbar.view
-                snackbar.setAnchorView(llGameInfo)
-                snackbar.view.setBackgroundColor(ContextCompat.getColor(this, R.color.color_progress_full))
+                val snackbar =
+                    Snackbar.make(clRoot, "🎉🎉🎉 LEVEL COMPLETE 🎉🎉🎉 ", Snackbar.LENGTH_LONG)
+                snackbar.setAnchorView(llGameInfo) //so that snackbar appears above that llGame element
+                snackbar.view.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.color_progress_full
+                    )
+                )
                 snackbar.show()
 
-//                ChocoBar.builder().setActivity(MainActivity.this)
-//                    .setText("GREEN")
-//                    .setDuration(ChocoBar.LENGTH_SHORT)
-//                    .green()  // in built green ChocoBar
-//                    .show();
             }
         }
 
