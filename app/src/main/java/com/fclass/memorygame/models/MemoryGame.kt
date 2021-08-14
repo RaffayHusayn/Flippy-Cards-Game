@@ -24,7 +24,7 @@ class MemoryGame(private val boardSize: BoardSize) {
         cards = randomizedImages.map { MemoryCard(identifier = it) }
     }
 
-    fun flipCard(position: Int): Boolean {
+    fun flipCard(position: Int): Boolean {//return TRUE when a match is found, else return FALSE
         val card = cards[position]
 
         var foundMatch = false

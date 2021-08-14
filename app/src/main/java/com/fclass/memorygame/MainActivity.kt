@@ -77,10 +77,14 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        //Actually flipping the card
-        if (memoryGame.flipCard(position)){
+        //Actually flipping the card, FLIPCARD returns true when a match is found
+        if (memoryGame.flipCard(position)) {
+            Log.i(TAG, "Found a match, no of pairs found :${memoryGame.numPairsFound}")
+            tvNumPairs.text = "Pairs : ${memoryGame.numPairsFound} / ${boardSize.getNumPairs()}"
 
-            Log.i(TAG, "Game is won, no of pairs found :${memoryGame.numPairsFound}")
+            if(memoryGame.haveWonGame()){
+                Snackbar.make(clRoot, "Congrats, you won", Snackbar.LENGTH_SHORT).show()
+            }
         }
         //once the card is flipped, we have to notify the adapter that it is changed
         adapter.notifyDataSetChanged()
