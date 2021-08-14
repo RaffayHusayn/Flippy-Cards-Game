@@ -5,6 +5,8 @@ import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -18,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar
 class MainActivity : AppCompatActivity() {
 
     private lateinit var clRoot: ConstraintLayout
+    private lateinit var llGameInfo: LinearLayout
     private lateinit var memoryGame: MemoryGame
     private lateinit var rvBoard: RecyclerView
     private lateinit var tvNumMoves: TextView
@@ -25,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: MemoryBoardAdapter
 
     //creating an object of BoardSize class
-    private var boardSize: BoardSize = BoardSize.EASY
+    private var boardSize: BoardSize = BoardSize.MEDIUM
 
 
     companion object {
@@ -41,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         rvBoard = findViewById(R.id.rvBoard)
         tvNumMoves = findViewById(R.id.tvNumMoves)
         tvNumPairs = findViewById(R.id.tvNumPairs)
+        llGameInfo = findViewById(R.id.llGameInfo)
 
 
         memoryGame = MemoryGame(boardSize)
@@ -94,8 +98,23 @@ class MainActivity : AppCompatActivity() {
             tvNumPairs.setTypeface(null, Typeface.BOLD)
             tvNumPairs.text = "Pairs : ${memoryGame.numPairsFound} / ${boardSize.getNumPairs()}"
 
-            if(memoryGame.haveWonGame()){
-                Snackbar.make(clRoot, "Congrats, you won", Snackbar.LENGTH_SHORT).show()
+            if (memoryGame.haveWonGame()) {
+
+
+//                Snackbar.make(clRoot, "Congrats, you won", Snackbar.LENGTH_SHORT).show()
+
+//
+                val snackbar = Snackbar.make(clRoot, "🎉🎉🎉 LEVEL COMPLETE 🎉🎉🎉 ", Snackbar.LENGTH_LONG)
+                //val sbView: View = snackbar.view
+                snackbar.setAnchorView(llGameInfo)
+                snackbar.view.setBackgroundColor(ContextCompat.getColor(this, R.color.color_progress_full))
+                snackbar.show()
+
+//                ChocoBar.builder().setActivity(MainActivity.this)
+//                    .setText("GREEN")
+//                    .setDuration(ChocoBar.LENGTH_SHORT)
+//                    .green()  // in built green ChocoBar
+//                    .show();
             }
         }
 
@@ -108,3 +127,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 }
+
+
+
