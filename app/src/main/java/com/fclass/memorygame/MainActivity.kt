@@ -6,10 +6,12 @@ import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -34,15 +36,9 @@ class MainActivity : AppCompatActivity() {
     private var boardSize: BoardSize = BoardSize.MEDIUM
 
 
-
-
     companion object {
         private const val TAG = "MainActivity"
     }
-
-
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,10 +57,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
-
-
     //Inflating the Main Activity with the Menu Resource File that we created in menu_main.xml
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -72,27 +64,29 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
-
     //This is how we get notified of the user tapping on the Refresh button in the menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.mi_refresh -> {
                 //Show alert dialog to user because he can lose progress
-                if (memoryGame.getNumMoves() >0 && !memoryGame.haveWonGame()){
+                if (memoryGame.getNumMoves() > 0 && !memoryGame.haveWonGame()) {
                     showAlertDialog("🤔🤔Quit your current game?🧐🧐", null, View.OnClickListener {
                         setupBoard()
                     })
-                }else{
+                } else {
                     //Setup the game again, Pressing of Refresh Button is detected
                     setupBoard()
                 }
 
-
-
-
+                return true
             }
+
+            R.id.mi_new_size -> {
+                ShowNewSizeDialog()
+                return true
+            }
+
+
         }
         return super.onOptionsItemSelected(item)
     }
@@ -102,18 +96,48 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    private fun showAlertDialog(title: String, view: View?, positiveClickListener: View.OnClickListener) {
-        AlertDialog.Builder(this)
-            .setTitle(title)
-            .setView(view)
-            .setNegativeButton("Cancel", null)
-            .setPositiveButton("Ok"){_,_ ->
-                positiveClickListener.onClick(null)
-            }.show() 
+    private fun ShowNewSizeDialog() {
+
+        val boardSizeView = LayoutInflater.from(this).inflate(R.layout.dialog_board_size, null)
+        val radioGroupSize = boardSizeView.findViewById<RadioGroup>(R.id.radioGroup)
+
+        //we want radio button to check the level that's already selected
+        when (boardSize){
+            BoardSize.EASY -> radioGroupSize.check(R.id.rbEasy)
+            BoardSize.MEDIUM -> radioGroupSize.check(R.id.rbMedium)
+            BoardSize.HARD -> radioGroupSize.check(R.id.rbHard)
+        }
+
+
+        showAlertDialog("🔴🟡🟢 Choose new Size 🟢🟡🔴", boardSizeView, View.OnClickListener {
+            //Change the value of the board Size
+            boardSize = when (radioGroupSize.checkedRadioButtonId){
+                R.id.rbEasy -> BoardSize.EASY
+                R.id.rbMedium -> BoardSize.MEDIUM
+                else -> BoardSize.HARD
+            }
+
+            setupBoard()
+        })
     }
 
 
 
+
+
+    private fun showAlertDialog(
+        title: String,
+        view: View?,
+        positiveClickListener: View.OnClickListener
+    ) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setView(view)
+            .setNegativeButton("Cancel", null)
+            .setPositiveButton("Ok") { _, _ ->
+                positiveClickListener.onClick(null)
+            }.show()
+    }
 
 
     //all the logic to setup a new game ofter REFRESH
@@ -130,7 +154,7 @@ class MainActivity : AppCompatActivity() {
             }
             BoardSize.HARD -> {
                 tvNumMoves.text = "Hard : 6 x 4"
-                tvNumPairs.text = "Pairs : 0 / 24"
+                tvNumPairs.text = "Pairs : 0 / 12"
             }
         }
 
@@ -152,11 +176,6 @@ class MainActivity : AppCompatActivity() {
         rvBoard.setHasFixedSize(true)
         rvBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
     }
-
-
-
-
-
 
 
     private fun updateGameWithFlip(position: Int) {

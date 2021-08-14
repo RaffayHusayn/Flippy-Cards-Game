@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/mi_new_size"
+        android:icon="@drawable/ic_level"
+        android:title="Choose New Size"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/mi_refresh"
         android:icon="@drawable/ic_refresh"
         android:title="Refresh"
