@@ -118,6 +118,23 @@ class MainActivity : AppCompatActivity() {
 
     //all the logic to setup a new game ofter REFRESH
     private fun setupBoard() {
+        //dynamically setting the UI text boxes
+        when (boardSize) {
+            BoardSize.EASY -> {
+                tvNumMoves.text = "Easy : 4 x 2"
+                tvNumPairs.text = "Pairs : 0 / 4"
+            }
+            BoardSize.MEDIUM -> {
+                tvNumMoves.text = "Medium : 6 x 3"
+                tvNumPairs.text = "Pairs : 0 / 9"
+            }
+            BoardSize.HARD -> {
+                tvNumMoves.text = "Hard : 6 x 4"
+                tvNumPairs.text = "Pairs : 0 / 24"
+            }
+        }
+
+
         memoryGame = MemoryGame(boardSize)
         //second parameter in MemoryBoardAdapter is boardSize not boardSize.numCards because we made this
         //class and the data type for second parameter is not int but BoardSize
