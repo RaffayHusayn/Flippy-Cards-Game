@@ -1,2 +1,2 @@
 # Memory-Game-Android
-![Game Preview](https://media.giphy.com/media/kQu0okKynpoNsCvUIq/giphy.gif)
+![Game Preview](https://media.giphy.com/media/UnwwOl1kyHburRoyMg/giphy.gif)
